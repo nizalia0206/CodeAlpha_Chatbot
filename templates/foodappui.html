@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Food App - FAQ Bot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffe6dc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .chat-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #e64a19;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #e64a19;
+      color: #fff;
+      border: none;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #bf360c;
+    }
+
+    .response {
+      margin-top: 15px;
+      padding: 15px;
+      background: #fff3e0;
+      border-left: 5px solid #ff7043;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+  <h2>🍔 FoodBot FAQ</h2>
+  <input type="text" id="question" placeholder="Ask something... e.g. How do I cancel an order?">
+  <button onclick="askQuestion()">Ask</button>
+  <div class="response" id="response">Your answer will appear here.</div>
+</div>
+
+<script>
+  function askQuestion() {
+    const question = document.getElementById("question").value;
+    const responseDiv = document.getElementById("response");
+
+    fetch("/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "question=" + encodeURIComponent(question)
+    })
+    .then(res => res.json())
+    .then(data => {
+      responseDiv.innerText = data.response;
+    })
+    .catch(() => {
+      responseDiv.innerText = "Oops! Something went wrong.";
+    });
+  }
+</script>
+
+</body>
+</html>
